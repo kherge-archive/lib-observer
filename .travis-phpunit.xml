@@ -17,7 +17,7 @@
             <string>Phine\Observer</string>
           </element>
           <element key="repo_token">
-            <string></string>
+            <string>QVnUd8GLjBQpc6bCOCTpawl02GHJBDfFN</string>
           </element>
           <element key="target_url">
             <string>https://coveralls.io/api/v1/jobs</string>
