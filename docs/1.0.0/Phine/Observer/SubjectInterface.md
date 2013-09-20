@@ -1,20 +1,27 @@
 <small>Phine\Observer</small>
 
-Subject
-=======
+SubjectInterface
+================
 
-The default implementation of the {@link SubjectInterface} interface.
+Defines how a subject class must be implemented.
 
 Signature
 ---------
 
-- It is a(n) **class**.
-- It implements the [`SubjectInterface`](../../Phine/Observer/SubjectInterface.md) interface.
+- It is a(n) **interface**.
+
+Constants
+---------
+
+This interface defines the following constants:
+
+- [`FIRST_PRIORITY`](#FIRST_PRIORITY) &mdash; The first priority of an observer.
+- [`LAST_PRIORITY`](#LAST_PRIORITY) &mdash; The last priority of an observer.
 
 Methods
 -------
 
-The class defines the following methods:
+The interface defines the following methods:
 
 - [`hasObserver()`](#hasObserver) &mdash; Checks if a specific observer is registered with this subject.
 - [`hasObservers()`](#hasObservers) &mdash; Checks if this subject has any observers registered.
