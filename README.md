@@ -6,8 +6,47 @@ Exception
 [![Latest Stable Version][]](https://packagist.org/packages/phine/observer)
 [![Total Downloads][]](https://packagist.org/packages/phine/observer)
 
+An implementation of the observer design pattern.
+
 Usage
 -----
+
+```php
+use Phine\Observer\Subject;
+use Phine\Observer\SubjectInterface;
+use Phine\Observer\ObserverInterface;
+
+class MySubject extends Subject
+{
+    private $state;
+
+    public function __construct($state)
+    {
+        $this->state = $state;
+    }
+
+    public function getState()
+    {
+        return $this->state;
+    }
+}
+
+class MyObserver implements ObserverInterface
+{
+    public function receiveUpdate(SubjectInterface $subject)
+    {
+        echo 'Turned ', $subject->getState(), ".\n";
+    }
+}
+
+$on = new MySubject('on');
+$on->registerObserver(new MyObserver());
+$on->notifyObservers();
+
+/*
+ * Echoes: "Turned on."
+ */
+```
 
 Requirement
 -----------
