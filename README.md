@@ -1,5 +1,5 @@
-Exception
-=========
+Observer
+========
 
 [![Build Status][]](https://travis-ci.org/phine/lib-observer)
 [![Coverage Status][]](https://coveralls.io/r/phine/lib-observer)
