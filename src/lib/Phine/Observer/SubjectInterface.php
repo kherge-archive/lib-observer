@@ -81,6 +81,10 @@ interface SubjectInterface
      * finish, and then an exception is thrown stating the reason for the
      * interruption.
      *
+     * @return mixed While not required, a subject may return a value once
+     *               all of the observers have been notified. If no value is
+     *               available, `null` is always returned.
+     *
      * @throws ReasonException If the update is interrupted.
      */
     public function notifyObservers();
