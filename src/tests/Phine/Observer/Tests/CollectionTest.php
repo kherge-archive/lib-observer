@@ -5,6 +5,7 @@ namespace Phine\Observer\Tests;
 use Phine\Observer\Collection;
 use Phine\Observer\Subject;
 use Phine\Observer\Test\Observer;
+use Phine\Test\Property;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
@@ -28,7 +29,7 @@ class CollectionTest extends TestCase
     {
         $subject = new Subject();
 
-        set($this->collection, 'subjects', array('test' => $subject));
+        Property::set($this->collection, 'subjects', array('test' => $subject));
 
         $this->assertSame(
             $subject,
@@ -60,7 +61,11 @@ class CollectionTest extends TestCase
             'Make sure the "test" subject is not registered.'
         );
 
-        set($this->collection, 'subjects', array('test' => new Subject()));
+        Property::set(
+            $this->collection,
+            'subjects',
+            array('test' => new Subject())
+        );
 
         $this->assertTrue(
             $this->collection->isSubjectRegistered('test'),
@@ -80,7 +85,7 @@ class CollectionTest extends TestCase
 
         $this->assertSame(
             array('test' => $subject),
-            get($this->collection, 'subjects'),
+            Property::get($this->collection, 'subjects'),
             'Make sure that the "test" subject is registered.'
         );
     }
@@ -109,7 +114,7 @@ class CollectionTest extends TestCase
     {
         $subject = new Subject();
 
-        set($this->collection, 'subjects', array('test' => $subject));
+        Property::set($this->collection, 'subjects', array('test' => $subject));
 
         $new = new Subject();
 
@@ -117,7 +122,7 @@ class CollectionTest extends TestCase
 
         $this->assertSame(
             array('test' => $new),
-            get($this->collection, 'subjects'),
+            Property::get($this->collection, 'subjects'),
             'Make sure the "test" subject is replaced.'
         );
     }
@@ -142,13 +147,13 @@ class CollectionTest extends TestCase
      */
     public function testUnregisterSubject()
     {
-        set($this->collection, 'subjects', array('test' =>  new Subject()));
+        Property::set($this->collection, 'subjects', array('test' =>  new Subject()));
 
         $this->collection->unregisterSubject('test');
 
         $this->assertSame(
             array(),
-            get($this->collection, 'subjects'),
+            Property::get($this->collection, 'subjects'),
             'Make sure the "test" subject is unregistered.'
         );
     }
@@ -176,7 +181,7 @@ class CollectionTest extends TestCase
 
         $subject->registerObserver($observer);
 
-        set($this->collection, 'subjects', array('test' => $subject));
+        Property::set($this->collection, 'subjects', array('test' => $subject));
 
         $this->collection->updateSubject('test');
 

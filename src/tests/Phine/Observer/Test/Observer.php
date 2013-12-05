@@ -5,6 +5,8 @@ namespace Phine\Observer\Test;
 use Phine\Observer\Exception\ReasonException;
 use Phine\Observer\ObserverInterface;
 use Phine\Observer\SubjectInterface;
+use Phine\Test\Property;
+use PHPUnit_Framework_TestCase as TestCase;
 
 /**
  * A simple test observer.
@@ -19,6 +21,13 @@ class Observer implements ObserverInterface
      * @var integer
      */
     public static $counter = 0;
+
+    /**
+     * Perform a double update?
+     *
+     * @var boolean
+     */
+    private $double = false;
 
     /**
      * The order in which it was called.
@@ -49,13 +58,27 @@ class Observer implements ObserverInterface
     private $interrupt;
 
     /**
+     * The test case.
+     *
+     * @var TestCase
+     */
+    private $test;
+
+    /**
      * Sets the interrupt flag.
      *
-     * @param boolean $interrupt Interrupt the update?
+     * @param boolean  $interrupt Interrupt the update?
+     * @param TestCase $test      The test case.
+     * @param boolean  $double    Perform a double update?
      */
-    public function __construct($interrupt = false)
-    {
+    public function __construct(
+        $interrupt = false,
+        TestCase $test = null,
+        $double = false
+    ) {
+        $this->double = $double;
         $this->interrupt = $interrupt;
+        $this->test = $test;
     }
 
     /**
@@ -66,6 +89,17 @@ class Observer implements ObserverInterface
         $this->order = self::$counter++;
 
         $this->subject = $subject;
+
+        if ($this->double) {
+            $subject->notifyObservers();
+        }
+
+        if ($this->test) {
+            $this->test->assertTrue(
+                Property::get($subject, 'updating'),
+                'The subject should be updating.'
+            );
+        }
 
         if ($this->interrupt) {
             $this->reason = new ReasonException('Testing interruption.');

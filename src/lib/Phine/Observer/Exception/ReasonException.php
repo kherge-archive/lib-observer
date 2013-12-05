@@ -18,8 +18,6 @@ class ReasonException extends Exception
      */
     public static function notSpecified()
     {
-        return new self(
-            '(no reason specified)'
-        );
+        return new self('(no reason specified)');
     }
 }

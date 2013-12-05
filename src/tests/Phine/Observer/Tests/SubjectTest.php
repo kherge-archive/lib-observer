@@ -3,8 +3,10 @@
 namespace Phine\Observer\Tests;
 
 use Phine\Observer\Exception\ReasonException;
+use Phine\Observer\Exception\SubjectException;
 use Phine\Observer\Subject;
 use Phine\Observer\Test\Observer;
+use Phine\Test\Property;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
@@ -22,6 +24,22 @@ class SubjectTest extends TestCase
     private $subject;
 
     /**
+     * Make sure that we can get the reason for the interrupted update.
+     */
+    public function testGetInterruptReason()
+    {
+        $reason = ReasonException::notSpecified();
+
+        Property::set($this->subject, 'reason', $reason);
+
+        $this->assertSame(
+            $reason,
+            $this->subject->getInterruptReason(),
+            'Make sure we can retrieve the reason for the interrupted update.'
+        );
+    }
+
+    /**
      * Make sure that we can check if an observer is registered.
      */
     public function testHasObserver()
@@ -33,7 +51,7 @@ class SubjectTest extends TestCase
             'Make sure we do not find the observer in a new subject.'
         );
 
-        set($this->subject, 'observers', array(array($observer)));
+        Property::set($this->subject, 'observers', array(array($observer)));
 
         $this->assertTrue(
             $this->subject->hasObserver($observer),
@@ -56,14 +74,18 @@ class SubjectTest extends TestCase
      */
     public function testHasObservers()
     {
-        set($this->subject, 'observers', array(123 => array()));
+        Property::set($this->subject, 'observers', array(123 => array()));
 
         $this->assertFalse(
             $this->subject->hasObservers(),
             'Make sure that no observers are registered with a new subject.'
         );
 
-        set($this->subject, 'observers', array(123 => array(new Observer())));
+        Property::set(
+            $this->subject,
+            'observers',
+            array(123 => array(new Observer()))
+        );
 
         $this->assertTrue(
             $this->subject->hasObservers(),
@@ -86,22 +108,74 @@ class SubjectTest extends TestCase
      */
     public function testInterruptUpdate()
     {
+        Property::set($this->subject, 'updating', true);
+
         $this->subject->interruptUpdate();
 
         $this->assertEquals(
             '(no reason specified)',
-            get($this->subject, 'reason')->getMessage(),
+            Property::get($this->subject, 'reason')->getMessage(),
             'Make sure that a default reason is used if none is given.'
         );
 
         $reason = new ReasonException('Just testing.');
 
+        Property::set($this->subject, 'updating', true);
+
         $this->subject->interruptUpdate($reason);
 
         $this->assertSame(
             $reason,
-            get($this->subject, 'reason'),
+            Property::get($this->subject, 'reason'),
             'Make sure that we can use our own reason for interrupting.'
+        );
+
+        $this->assertFalse(
+            Property::get($this->subject, 'updating'),
+            'The subject should no longer be in the updating state.'
+        );
+
+        $this->setExpectedException(
+            'Phine\\Observer\\Exception\\SubjectException',
+            'There is no update in progress to interrupt.'
+        );
+
+        $this->subject->interruptUpdate();
+    }
+
+    /**
+     * Make sure that we can check if an update was interrupted.
+     */
+    public function testIsInterrupted()
+    {
+        $this->assertFalse(
+            $this->subject->isInterrupted(),
+            'By default, the subject should not be interrupted.'
+        );
+
+        Property::set($this->subject, 'reason', new ReasonException());
+
+        $this->assertTrue(
+            $this->subject->isInterrupted(),
+            'The subject should now be interrupted.'
+        );
+    }
+
+    /**
+     * Make sure that sure can check if an update is in progress.
+     */
+    public function testIsUpdating()
+    {
+        $this->assertFalse(
+            $this->subject->isUpdating(),
+            'By default, the subject should not be in the updating state.'
+        );
+
+        Property::set($this->subject, 'updating', true);
+
+        $this->assertTrue(
+            $this->subject->isUpdating(),
+            'The subject should now be in the updating state.'
         );
     }
 
@@ -110,15 +184,16 @@ class SubjectTest extends TestCase
      */
     public function testNotifyObservers()
     {
+        // perform a regular update
         Observer::$counter = 0;
 
         $observers = array(
-            array(new Observer(), 2),
-            array(new Observer(), 0),
-            array(new Observer(), 1),
+            array(new Observer(false, $this), 2),
+            array(new Observer(false, $this), 0),
+            array(new Observer(false, $this), 1),
         );
 
-        set(
+        Property::set(
             $this->subject,
             'observers',
             array(
@@ -128,6 +203,11 @@ class SubjectTest extends TestCase
         );
 
         $this->subject->notifyObservers();
+
+        $this->assertFalse(
+            Property::get($this->subject, 'updating'),
+            'The subject should no longer be updating.'
+        );
 
         foreach ($observers as $i => $observer) {
             $this->assertSame(
@@ -143,13 +223,14 @@ class SubjectTest extends TestCase
             );
         }
 
+        // perform an interrupted update
         $observers = array(
             array(new Observer(), null),
             array(new Observer(), 3),
             array(new Observer(true), 4),
         );
 
-        set(
+        Property::set(
             $this->subject,
             'observers',
             array(
@@ -157,7 +238,6 @@ class SubjectTest extends TestCase
                 123 => array($observers[2][0], $observers[0][0]),
             )
         );
-
         try {
             $this->subject->notifyObservers();
         } catch (ReasonException $reason) {
@@ -175,6 +255,39 @@ class SubjectTest extends TestCase
             isset($reason),
             'Make sure that the update was interrupted.'
         );
+
+        $this->assertNotNull(
+            Property::get($this->subject, 'reason'),
+            'The interrupt reason should be set.'
+        );
+
+        $this->assertFalse(
+            Property::get($this->subject, 'updating'),
+            'The subject should no longer be updating.'
+        );
+
+        // perform a double update
+        Property::set(
+            $this->subject,
+            'observers',
+            array(
+                0 => array(new Observer(false, null, true)),
+            )
+        );
+        try {
+            $this->subject->notifyObservers();
+        } catch (SubjectException $exception) {
+        }
+
+        $this->assertTrue(
+            isset($exception),
+            'Make sure that the double update was done.'
+        );
+
+        $this->assertFalse(
+            Property::get($this->subject, 'updating'),
+            'The subject should no longer be updating.'
+        );
     }
 
     /**
@@ -190,7 +303,7 @@ class SubjectTest extends TestCase
             array(
                 0 => array($observer)
             ),
-            get($this->subject, 'observers'),
+            Property::get($this->subject, 'observers'),
             'Make sure the observer is registered as zero priority.'
         );
 
@@ -201,7 +314,7 @@ class SubjectTest extends TestCase
                 0 => array($observer),
                 123 => array($observer)
             ),
-            get($this->subject, 'observers'),
+            Property::get($this->subject, 'observers'),
             'Make sure that the observer is registered with priority 123.'
         );
     }
@@ -217,7 +330,7 @@ class SubjectTest extends TestCase
             new Observer(),
         );
 
-        set(
+        Property::set(
             $this->subject,
             'observers',
             array(
@@ -235,7 +348,7 @@ class SubjectTest extends TestCase
                 123 => array($observers[0], 2 => $observers[2]),
                 456 => array($observers[2], $observers[2]),
             ),
-            get($this->subject, 'observers'),
+            Property::get($this->subject, 'observers'),
             'Make sure that all of a single observer is unregistered in a specific priority.'
         );
 
@@ -247,7 +360,7 @@ class SubjectTest extends TestCase
                 123 => array($observers[0]),
                 456 => array(),
             ),
-            get($this->subject, 'observers'),
+            Property::get($this->subject, 'observers'),
             'Make sure that all of a single observer is unregistered for any priority.'
         );
 
@@ -258,7 +371,7 @@ class SubjectTest extends TestCase
                 123 => array($observers[0]),
                 456 => array(),
             ),
-            get($this->subject, 'observers'),
+            Property::get($this->subject, 'observers'),
             'Make sure that all observers of a single priority are unregistered.'
         );
 
@@ -266,7 +379,7 @@ class SubjectTest extends TestCase
 
         $this->assertSame(
             array(),
-            get($this->subject, 'observers'),
+            Property::get($this->subject, 'observers'),
             'Make sure that all observers are unregistered.'
         );
     }
@@ -282,7 +395,7 @@ class SubjectTest extends TestCase
             new Observer(),
         );
 
-        set(
+        Property::set(
             $this->subject,
             'observers',
             array(
@@ -300,7 +413,7 @@ class SubjectTest extends TestCase
                 123 => array($observers[0], $observers[1], $observers[2], $observers[1]),
                 456 => array($observers[2], $observers[2]),
             ),
-            get($this->subject, 'observers'),
+            Property::get($this->subject, 'observers'),
             'Unregister the first occurrence sorted by priority.'
         );
 
@@ -312,7 +425,7 @@ class SubjectTest extends TestCase
                 123 => array($observers[0], $observers[1], $observers[2], $observers[1]),
                 456 => array(1 => $observers[2]),
             ),
-            get($this->subject, 'observers'),
+            Property::get($this->subject, 'observers'),
             'Unregister the first occurrence for a specific priority.'
         );
     }

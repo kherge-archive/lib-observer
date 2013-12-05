@@ -2,12 +2,16 @@
 
 namespace Phine\Observer;
 
+use Exception;
 use Phine\Observer\Exception\ReasonException;
+use Phine\Observer\Exception\SubjectException;
 
 /**
  * The default implementation of the {@link SubjectInterface} interface.
  *
  * @author Kevin Herrera <kevin@herrera.io>
+ *
+ * @api
  */
 class Subject implements SubjectInterface
 {
@@ -24,6 +28,21 @@ class Subject implements SubjectInterface
      * @var ReasonException
      */
     private $reason;
+
+    /**
+     * The flag used to determine if an update is in progress.
+     *
+     * @var boolean
+     */
+    private $updating = false;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getInterruptReason()
+    {
+        return $this->reason;
+    }
 
     /**
      * {@inheritDoc}
@@ -66,11 +85,32 @@ class Subject implements SubjectInterface
      */
     public function interruptUpdate(ReasonException $reason = null)
     {
+        if (false === $this->updating) {
+            throw SubjectException::notUpdating();
+        }
+
         if (null === $reason) {
             $reason = ReasonException::notSpecified();
         }
 
         $this->reason = $reason;
+        $this->updating = false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isInterrupted()
+    {
+        return (null !== $this->reason);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isUpdating()
+    {
+        return $this->updating;
     }
 
     /**
@@ -78,19 +118,35 @@ class Subject implements SubjectInterface
      */
     public function notifyObservers()
     {
+        if ($this->updating) {
+            throw SubjectException::alreadyUpdating();
+        }
+
         $this->resetInterrupt();
         $this->sortObservers();
+
+        $this->updating = true;
 
         /** @var ObserverInterface $observer */
         foreach ($this->observers as $observers) {
             foreach ($observers as $observer) {
+                try {
                 $observer->receiveUpdate($this);
+                } catch (Exception $exception) {
+                    $this->updating = false;
+
+                    throw $exception;
+                }
 
                 if ($this->reason) {
+                    $this->updating = false;
+
                     throw $this->reason;
                 }
             }
         }
+
+        $this->updating = false;
     }
 
     /**

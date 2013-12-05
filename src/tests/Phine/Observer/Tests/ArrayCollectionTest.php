@@ -4,6 +4,7 @@ namespace Phine\Observer\Tests;
 
 use Phine\Observer\ArrayCollection;
 use Phine\Observer\Subject;
+use Phine\Test\Property;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
@@ -30,7 +31,7 @@ class ArrayCollectionTest extends TestCase
             'Make sure the "test" subject is not registered.'
         );
 
-        set($this->collection, 'subjects', array('test' => new Subject()));
+        Property::set($this->collection, 'subjects', array('test' => new Subject()));
 
         $this->assertTrue(
             isset($this->collection['test']),
@@ -45,7 +46,7 @@ class ArrayCollectionTest extends TestCase
     {
         $subject = new Subject();
 
-        set($this->collection, 'subjects', array('test' => $subject));
+        Property::set($this->collection, 'subjects', array('test' => $subject));
 
         $this->assertSame(
             $subject,
@@ -65,7 +66,7 @@ class ArrayCollectionTest extends TestCase
 
         $this->assertSame(
             array('test' => $subject),
-            get($this->collection, 'subjects'),
+            Property::get($this->collection, 'subjects'),
             'Make sure that the "test" subject is set.'
         );
 
@@ -75,7 +76,7 @@ class ArrayCollectionTest extends TestCase
 
         $this->assertSame(
             array('test' => $new),
-            get($this->collection, 'subjects'),
+            Property::get($this->collection, 'subjects'),
             'Make sure that the "test" subject is replaced.'
         );
     }
@@ -87,14 +88,14 @@ class ArrayCollectionTest extends TestCase
     {
         $subject = new Subject();
 
-        set($this->collection, 'subjects', array('test' => $subject));
+        Property::set($this->collection, 'subjects', array('test' => $subject));
 
         unset($this->collection['test']);
         unset($this->collection['test']); // should not thrown an exception
 
         $this->assertSame(
             array(),
-            get($this->collection, 'subjects'),
+            Property::get($this->collection, 'subjects'),
             'Make sure the "test" subject is unregistered.'
         );
     }
