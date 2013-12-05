@@ -1,6 +1,6 @@
 {
     "name": "phine/observer",
-    "description": "An implementation of the observer design pattern.",
+    "description": "A PHP library that implements the observer pattern.",
     "keywords": ["observer"],
     "homepage": "https://github.com/phine/lib-observer",
     "license": "MIT",
