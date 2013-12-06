@@ -38,6 +38,17 @@ class Collection implements CollectionInterface
     /**
      * {@inheritDoc}
      */
+    public function copySubjects(CollectionInterface $collection)
+    {
+        $this->subjects = array_merge(
+            $this->subjects,
+            $collection->getSubjects()
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getSubject($id)
     {
         if (!isset($this->subjects[$id])) {
@@ -45,6 +56,14 @@ class Collection implements CollectionInterface
         }
 
         return $this->subjects[$id];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSubjects()
+    {
+        return $this->subjects;
     }
 
     /**
@@ -77,6 +96,14 @@ class Collection implements CollectionInterface
         }
 
         $this->subjects[$id] = $subject;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function replaceSubjects(CollectionInterface $collection)
+    {
+        $this->subjects = $collection->getSubjects();
     }
 
     /**

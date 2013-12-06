@@ -103,6 +103,20 @@ use Phine\Observer\Exception\CollectionException;
 interface CollectionInterface
 {
     /**
+     * Copies subjects from another collection.
+     *
+     * This method will register the subjects of another collection with this
+     * collection. If the given collection has one or more subjects with the
+     * same unique identifier as those already registered with this collection,
+     * the subjects will be replaced with the ones being copied.
+     *
+     *     $collection->copySubjects($anotherCollection);
+     *
+     * @param CollectionInterface $collection A collection to copy from.
+     */
+    public function copySubjects(CollectionInterface $collection);
+
+    /**
      * Returns the subject with the unique identifier.
      *
      * This method will return the subject that was registered with the
@@ -120,6 +134,19 @@ interface CollectionInterface
      * @api
      */
     public function getSubject($id);
+
+    /**
+     * Returns a list of subjects registered to this collection.
+     *
+     * This method will return a list of subjects that have been registered
+     * with this collection. The list is return is an array with the key being
+     * the unique identifier of the subject (which is the value).
+     *
+     *     $subjects = $collection->getSubjects();
+     *
+     * @return SubjectInterface[] The list of subjects.
+     */
+    public function getSubjects();
 
     /**
      * Checks if a subject is registered with this collection.
@@ -178,6 +205,19 @@ interface CollectionInterface
      * @api
      */
     public function replaceSubject($id, SubjectInterface $subject);
+
+    /**
+     * Replaces the subjects for this collection using subjects from another.
+     *
+     * This method will replace the subjects of this collection with the
+     * subjects registered with the given collection. Any previous subjects
+     * registered with this collection will be forgotten.
+     *
+     *     $subject->replaceSubjects($anotherCollection);
+     *
+     * @param CollectionInterface $collection A collection to replace with.
+     */
+    public function replaceSubjects(CollectionInterface $collection);
 
     /**
      * Unregisters a subject from the collection.

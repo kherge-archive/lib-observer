@@ -23,6 +23,49 @@ class CollectionTest extends TestCase
     private $collection;
 
     /**
+     * Make sure that we can copy the subjects of another collection.
+     */
+    public function testCopySubjects()
+    {
+        $a = new Subject();
+        $b = new Subject();
+        $c = new Subject();
+        $d = new Subject();
+
+        Property::set(
+            $this->collection,
+            'subjects',
+            array(
+                'b' => $b
+            )
+        );
+
+        $collection = new Collection();
+
+        Property::set(
+            $collection,
+            'subjects',
+            array(
+                'a' => $a,
+                'b' => $c,
+                'c' => $d
+            )
+        );
+
+        $this->collection->copySubjects($collection);
+
+        $this->assertSame(
+            array(
+                'b' => $c,
+                'a' => $a,
+                'c' => $d,
+            ),
+            Property::get($this->collection, 'subjects'),
+            'The subjects should have been copied correctly.'
+        );
+    }
+
+    /**
      * Make sure that we can retrieve a registered subject.
      */
     public function testGetSubject()
@@ -49,6 +92,26 @@ class CollectionTest extends TestCase
         );
 
         $this->collection->getSubject('test');
+    }
+
+    /**
+     * Make sure that we can retrieve the registered subjects.
+     */
+    public function testGetSubjects()
+    {
+        $subjects = array(
+            'a' => new Subject(),
+            'b' => new Subject(),
+            'c' => new Subject(),
+        );
+
+        Property::set($this->collection, 'subjects', $subjects);
+
+        $this->assertSame(
+            $subjects,
+            $this->collection->getSubjects(),
+            'The list of subjects should be returned.'
+        );
     }
 
     /**
@@ -140,6 +203,49 @@ class CollectionTest extends TestCase
         );
 
         $this->collection->replaceSubject('test', $subject);
+    }
+
+    /**
+     * Make sure that we can replace the subjects using another collection.
+     */
+    public function testReplaceSubjects()
+    {
+        $a = new Subject();
+        $b = new Subject();
+        $c = new Subject();
+        $d = new Subject();
+
+        Property::set(
+            $this->collection,
+            'subjects',
+            array(
+                'a' => $a
+            )
+        );
+
+        $collection = new Collection();
+
+        Property::set(
+            $collection,
+            'subjects',
+            array(
+                'b' => $b,
+                'c' => $c,
+                'd' => $d
+            )
+        );
+
+        $this->collection->replaceSubjects($collection);
+
+        $this->assertSame(
+            array(
+                'b' => $b,
+                'c' => $c,
+                'd' => $d,
+            ),
+            Property::get($this->collection, 'subjects'),
+            'The subjects should have been replaced.'
+        );
     }
 
     /**
