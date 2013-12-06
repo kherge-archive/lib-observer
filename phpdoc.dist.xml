@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+  <files>
+    <directory>../lib-observer/src/lib</directory>
+    <ignore>*/test/*</ignore>
+    <ignore>*/tests/*</ignore>
+  </files>
+  <parser>
+    <target>cache</target>
+  </parser>
+  <title>Observer API</title>
+  <transformations>
+    <template name="clean"/>
+  </transformations>
+  <transformer>
+    <target>.</target>
+  </transformer>
+</phpdoc>
+
