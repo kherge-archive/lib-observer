@@ -181,7 +181,7 @@ Via [Composer][]:
 Documentation
 -------------
 
-You can find the documentation in the [`docs/`](docs/) directory.
+You can find the [API documentation here][].
 
 License
 -------
@@ -195,3 +195,4 @@ This library is available under the [MIT license](LICENSE).
 [observer pattern]: http://en.wikipedia.org/wiki/Observer_pattern
 [Phine Exception]: https://github.com/phine/lib-exception
 [Composer]: http://getcomposer.org/
+[API documentation here]: http://phine.github.io/lib-observer
