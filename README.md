@@ -6,47 +6,164 @@ Observer
 [![Latest Stable Version][]](https://packagist.org/packages/phine/observer)
 [![Total Downloads][]](https://packagist.org/packages/phine/observer)
 
-An implementation of the observer design pattern.
+A PHP library that implements the observer pattern.
+
+Summary
+-------
+
+This library provides an implementation of the [observer pattern][]. You can
+use it to create other libraries such as event managers, state machines, and
+even MVC frameworks.
 
 Usage
 -----
 
+To create a subject, you will need to either create your own implementation
+of `SubjectInterface`, or use the bundled `Subject` class.
+
 ```php
 use Phine\Observer\Subject;
-use Phine\Observer\SubjectInterface;
+
+$subject = new Subject();
+```
+
+### Observing
+
+You will then need to create your own implementation of `ObserverInterface`
+to observe changes made to the subject. You may use multiple instances of
+the observer implementation, or even the same instance multiple times.
+
+```php
 use Phine\Observer\ObserverInterface;
+use Phine\Observer\SubjectInterface;
 
-class MySubject extends Subject
+// register a few instances
+$subject->registerObserver(new Message('First'));
+$subject->registerObserver(new Message('Second'));
+
+// register the same one twice
+$reuse = new Message('Third');
+
+$subject->registerObserver($reuse);
+$subject->registerObserver($reuse);
+
+// notify all observers of an update
+$subject->notifyObservers();
+
+/**
+ * Simply echos a message when updated.
+ */
+class Message implements ObserverInterface
 {
-    private $state;
+    /**
+     * The message to echo.
+     *
+     * @var string
+     */
+    private $message;
 
-    public function __construct($state)
+    /**
+     * Sets the message to echo on update.
+     *
+     * @param string $message The message.
+     */
+    public function __construct($message)
     {
-        $this->state = $state;
+        $this->message = $message;
     }
 
-    public function getState()
-    {
-        return $this->state;
-    }
-}
-
-class MyObserver implements ObserverInterface
-{
+    /**
+     * {@inheritDoc}
+     */
     public function receiveUpdate(SubjectInterface $subject)
     {
-        echo 'Turned ', $subject->getState(), ".\n";
+        echo $this->message, "\n";
     }
 }
-
-$on = new MySubject('on');
-$on->registerObserver(new MyObserver());
-$on->notifyObservers();
-
-/*
- * Echoes: "Turned on."
- */
 ```
+
+With the example above, you can expect the following output:
+
+    First
+    Second
+    Third
+    Third
+
+### Prioritizing Observers
+
+Implementations of `SubjectInterface` support prioritizing observers during
+registration (`registerObserver()`). By default, shown in all the examples
+provided, the priority is `SubjectInterface::FIRST_PRIORITY` (which is `0`,
+zero). You may, however, specify your own priority:
+
+    $subject->registerObserver(new Message('A'), SubjectInterface::LAST_PRIORITY);
+    $subject->registerObserver(new Message('B'), 789);
+    $subject->registerObserver(new Message('C'), 123);
+    $subject->registerObserver(new Message('D'), 456);
+    $subject->registerObserver(new Message('E'), SubjectInterface::FIRST_PRIORITY);
+
+With the above example, you can expect the following output:
+
+    E
+    C
+    D
+    B
+    A
+
+When a subject updates its observers it begins at priority `0` (zero), and works
+its way to `PHP_INT_MAX` (the lowest possible priority). If multiple observers
+are registered using the same provider, they will be updated in the order that
+they were registered.
+
+### Interrupting an Update
+
+When a subject is in the process of updating its registered observers, an
+observer may interrupt the subject. An interrupt is performed by an observer
+when it calls the `SubjectInterface::interruptUpdate()` method.
+
+    use Phine\Observer\Exception\ReasonException;
+
+    /**
+     * Simply interrupts the subject in the middle of an update.
+     */
+    class InterruptingCow implements ObserverInterface
+    {
+        /**
+         * Interrupts the update.
+         */
+        public function receiveUpdate(SubjectInterface $subject)
+        {
+            // do some work
+
+            $subject->interruptUpdate(
+                new ReasonException('MOOOOO')
+            );
+
+            // do some final work
+        }
+    }
+
+Using the following example:
+
+    // create a new subject
+    $subject = new Subject();
+
+    // register some observers
+    $subject->registerObserver(new Message('So what did the interrupt cow say?'));
+    $subject->registerObserver(new InterruptingCow());
+    $subject->registerObserver(new Message('We never get this far.'));
+
+    // notify the observers
+    $subject->notifyObservers();
+
+You can expect the following output:
+
+    So what did the interrupting cow say?
+    PHP Fatal error:  Uncaught exception '[...]' with message 'MOOOOO' [...]
+    [...]
+
+Observers are not required to provide a reason (instance of `ReasonException`),
+but it will definitely help during the debugging process if one is given.
 
 Requirement
 -----------
@@ -59,7 +176,7 @@ Installation
 
 Via [Composer][]:
 
-    $ composer require "phine/observer=~1.0"
+    $ composer require "phine/observer=~2.0"
 
 Documentation
 -------------
@@ -75,5 +192,6 @@ This library is available under the [MIT license](LICENSE).
 [Coverage Status]: https://coveralls.io/repos/phine/lib-observer/badge.png
 [Latest Stable Version]: https://poser.pugx.org/phine/observer/v/stable.png
 [Total Downloads]: https://poser.pugx.org/phine/observer/downloads.png
+[observer pattern]: http://en.wikipedia.org/wiki/Observer_pattern
 [Phine Exception]: https://github.com/phine/lib-exception
 [Composer]: http://getcomposer.org/
