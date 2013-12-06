@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+        <script type="text/javascript">
+        function loadExternalCodeSnippets() {
+            Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+                var src = pre.getAttribute('data-src');
+                var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+                var language = 'php';
+
+                var code = document.createElement('code');
+                code.className = 'language-' + language;
+
+                pre.textContent = '';
+
+                code.textContent = 'Loading…';
+
+                pre.appendChild(code);
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.open('GET', src, true);
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4) {
+
+                        if (xhr.status < 400 && xhr.responseText) {
+                            code.textContent = xhr.responseText;
+
+                            Prism.highlightElement(code);
+                        }
+                        else if (xhr.status >= 400) {
+                            code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                        }
+                        else {
+                            code.textContent = '✖ Error: File does not exist or is empty';
+                        }
+                    }
+                };
+
+                xhr.send(null);
+            });
+        }
+
+        $(document).ready(function(){
+            loadExternalCodeSnippets();
+        });
+        $('#source-view').on('shown', function () {
+            loadExternalCodeSnippets();
+        })
+    </script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/Phine.html">\Phine</a></li>
+                                                    </ul>
+                    </li>
+                    <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                    <i class="icon-list-alt"></i>&#160;Errors
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                    <i class="icon-list-alt"></i>&#160;Markers
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1844189952"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1844189952" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1805866385"></a>
+                                <a href="../namespaces/Phine.html" style="margin-left: 30px; padding-left: 0">Phine</a>
+            </div>
+            <div id="namespace-1805866385" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1630179016"></a>
+                                <a href="../namespaces/Phine.Observer.html" style="margin-left: 30px; padding-left: 0">Observer</a>
+            </div>
+            <div id="namespace-1630179016" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1757948844"></a>
+                                <a href="../namespaces/Phine.Observer.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-1757948844" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Phine.Observer.Exception.SubjectException.html">SubjectException</a></li>
+                                                    <li class="class"><a href="../classes/Phine.Observer.Exception.CollectionException.html">CollectionException</a></li>
+                                                    <li class="class"><a href="../classes/Phine.Observer.Exception.ReasonException.html">ReasonException</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Phine.Observer.ArrayCollectionInterface.html">ArrayCollectionInterface</a></li>
+                                                    <li class="interface"><a href="../classes/Phine.Observer.ObserverInterface.html">ObserverInterface</a></li>
+                                                    <li class="interface"><a href="../classes/Phine.Observer.CollectionInterface.html">CollectionInterface</a></li>
+                                                    <li class="interface"><a href="../classes/Phine.Observer.SubjectInterface.html">SubjectInterface</a></li>
+                                                                                                    <li class="class"><a href="../classes/Phine.Observer.Collection.html">Collection</a></li>
+                                                    <li class="class"><a href="../classes/Phine.Observer.Subject.html">Subject</a></li>
+                                                    <li class="class"><a href="../classes/Phine.Observer.ArrayCollection.html">ArrayCollection</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/Phine.Observer.html">\Phine\Observer</a>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\Phine\Observer</small>CollectionInterface</h1>
+                    <p><em>Defines how a subject collection class must be implemented.</em></p>
+                    <h2>Summary</h2>
+
+<p>A class implementing <code>CollectionInterface</code> will associate each subject that
+is registered with it a unique identifier. This unique identifier can then
+be used as a way to manage subjects without directly knowing which instance
+should be used.</p>
+
+<h2>Starting</h2>
+
+<p>To create a new collection, you will need to create an implementation of
+<code>CollectionInterface</code>. In this example, I will be using the <code>Collection</code>,
+a bundled implementation of the interface.</p>
+
+<pre><code>use Phine\Observers\Collection;
+
+$collection = new Collection();
+</code></pre>
+
+<h3>Managing Subjects</h3>
+
+<p>Once you have created your collection, you will want to register one or
+more subjects. Subjects are registered by association a specific unique
+identifier for each subject in the collection. You may register the same
+subject with different identifiers, but you may not register multiple
+subjects to the same identifier.</p>
+
+<pre><code>use Phine\Observers\Subject;
+
+// create our subjects
+$subject1 = new Subject();
+$subject2 = new Subject();
+$subject3 = new Subject();
+
+// register them with unique identifiers
+$collection-&gt;registerSubject('one', $subject1);
+$collection-&gt;registerSubject('two', $subject2);
+$collection-&gt;registerSubject('three', $subject3);
+$collection-&gt;registerSubject('four', $subject3);
+
+// this attempt will thrown an exception
+$collection-&gt;registerSubject('three', $subject1);
+</code></pre>
+
+<h3>Replacing Subjects</h3>
+
+<p>At some point, you may have a process that will swap one subject for
+another. The collection will not allow multiple registrations for a
+single unique identifier, but it will allow you to replace existing
+subjects with other ones.</p>
+
+<pre><code>$subject4 = new Subject();
+
+$collection-&gt;replaceSubject('four', $subject4);
+</code></pre>
+
+<p>If you attempt to replace a subject for a unique identifier that has not
+been used, an exception will be thrown. To prevent this from happening,
+you will want to check the registration of a unique identifier first.</p>
+
+<pre><code>$subject5 = new Subject();
+
+if ($collection-&gt;isSubjectRegistered('five')) {
+    $collection-&gt;replaceSubject('five', $subject5);
+} else {
+     $collection-&gt;registerSubject('five', $subject5);
+}
+</code></pre>
+
+<h3>Accessing Subjects</h3>
+
+<p>After your subjects have been registered or replaced, you will want to
+eventually use them.</p>
+
+<pre><code>$subject = $collection-&gt;getSubject('one');
+$subject-&gt;notifyObservers();
+
+// alternatively
+
+$collection-&gt;getSubject('one')-&gt;notifyObservers();
+</code></pre>
+
+<h3>Unregistering Subjects</h3>
+
+<p>Unregistering a subject is as simple as registering one. However, if you
+attempt to unregister a subject with a unique identifier that has not been
+used, an exception is thrown. You will want to check for registration before
+actually unregistering the subject.</p>
+
+<pre><code>if ($collection-&gt;isSubjectRegistered('three')) {
+    $collection-&gt;unregisterSubject('three');
+}
+</code></pre>
+
+
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span6">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span6">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span6">
+                                                                    <a href="../classes/Phine.Observer.CollectionInterface.html#method_copySubjects">copySubjects()</a><br />
+                                                                    <a href="../classes/Phine.Observer.CollectionInterface.html#method_getSubject">getSubject()</a><br />
+                                                                    <a href="../classes/Phine.Observer.CollectionInterface.html#method_getSubjects">getSubjects()</a><br />
+                                                                    <a href="../classes/Phine.Observer.CollectionInterface.html#method_isSubjectRegistered">isSubjectRegistered()</a><br />
+                                                                    <a href="../classes/Phine.Observer.CollectionInterface.html#method_registerSubject">registerSubject()</a><br />
+                                                                    <a href="../classes/Phine.Observer.CollectionInterface.html#method_replaceSubject">replaceSubject()</a><br />
+                                                                    <a href="../classes/Phine.Observer.CollectionInterface.html#method_replaceSubjects">replaceSubjects()</a><br />
+                                                                    <a href="../classes/Phine.Observer.CollectionInterface.html#method_unregisterSubject">unregisterSubject()</a><br />
+                                                            </section>
+                            <section class="span6">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span6">
+                                                                    <em>No protected methods found</em>
+                                                            </section>
+                            <section class="span6">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span6">
+                                                                    <em>No private methods found</em>
+                                                            </section>
+                            <section class="span6">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        <dl>
+                        <dt>File</dt>
+                            <dd>
+                                <a href="../files/CollectionInterface.php.html"><div class="path-wrapper">CollectionInterface.php</div></a>
+                            </dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">\Default</div></dd>
+                                                
+                                            </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr>
+                            <th>author</th>
+                            <td>
+                                                                    <p>Kevin Herrera <a href="&#109;&#x61;i&#108;&#x74;&#111;&#58;&#x6b;&#101;&#118;&#x69;&#110;&#64;&#x68;&#101;&#x72;&#x72;&#101;&#x72;&#x61;&#46;&#x69;o">&#x6b;&#101;&#118;&#x69;&#110;&#64;&#x68;&#101;&#x72;&#x72;&#101;&#x72;&#x61;&#46;&#x69;o</a></p>
+
+                                                            </td>
+                        </tr>
+                                            <tr>
+                            <th>api</th>
+                            <td>
+                                                                    
+
+                                                            </td>
+                        </tr>
+                                        </table>
+                </aside>
+            </div>
+
+            
+                        <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Methods</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_copySubjects" name="method_copySubjects" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">copySubjects()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">copySubjects(\Phine\Observer\CollectionInterface <span class="argument">$collection</span>)</pre>
+                <p><em>Copies subjects from another collection.</em></p>
+                <p>This method will register the subjects of another collection with this
+collection. If the given collection has one or more subjects with the
+same unique identifier as those already registered with this collection,
+the subjects will be replaced with the ones being copied.</p>
+
+<pre><code>$collection-&gt;copySubjects($anotherCollection);
+</code></pre>
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/Phine.Observer.CollectionInterface.html">\Phine\Observer\CollectionInterface</a></td>
+                                <td>$collection</td>
+                                <td><p>A collection to copy from.</p>
+</td>
+                            </tr>
+                                            </table>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getSubject" name="method_getSubject" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getSubject()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getSubject(string <span class="argument">$id</span>) : \Phine\Observer\SubjectInterface</pre>
+                <p><em>Returns the subject with the unique identifier.</em></p>
+                <p>This method will return the subject that was registered with the
+specified unique identifier. If a subject was not registered with
+the unique identifier, an exception is thrown.</p>
+
+<pre><code>$subject = $collection-&gt;getSubject('my_id');
+</code></pre>
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id</td>
+                                <td><p>The unique identifier.</p>
+</td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Phine\Observer\Exception\CollectionException</dt>
+                            <dd><p>If the unique identifier is not used.</p>
+</dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Phine.Observer.SubjectInterface.html">\Phine\Observer\SubjectInterface</a>
+                                            &mdash; <p>The registered subject.</p>
+
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getSubjects" name="method_getSubjects" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getSubjects()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getSubjects() : \Phine\Observer\SubjectInterface[]</pre>
+                <p><em>Returns a list of subjects registered to this collection.</em></p>
+                <p>This method will return a list of subjects that have been registered
+with this collection. The list is return is an array with the key being
+the unique identifier of the subject (which is the value).</p>
+
+<pre><code>$subjects = $collection-&gt;getSubjects();
+</code></pre>
+
+
+                
+                
+                                    <h4>Returns</h4>
+                    \Phine\Observer\SubjectInterface[]
+                                            &mdash; <p>The list of subjects.</p>
+
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_isSubjectRegistered" name="method_isSubjectRegistered" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">isSubjectRegistered()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">isSubjectRegistered(string <span class="argument">$id</span>) : boolean</pre>
+                <p><em>Checks if a subject is registered with this collection.</em></p>
+                <p>This method will check if a subject was registered using the specified
+unique identifier. If an identifier is registered currently registered,
+<code>true</code> is returned.</p>
+
+<pre><code>if ($collection-&gt;isSubjectRegistered('my_id')) {
+    // registered
+}
+</code></pre>
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id</td>
+                                <td><p>The unique identifier of the subject.</p>
+</td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>Returns <code>true</code> if a subject with the given unique
+                identifier is registered with this collection. If
+                a subject is not found, <code>false</code> is returned.</p>
+
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_registerSubject" name="method_registerSubject" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">registerSubject()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">registerSubject(string <span class="argument">$id</span>, \Phine\Observer\SubjectInterface <span class="argument">$subject</span>)</pre>
+                <p><em>Registers a subject with a unique identifier in this collection.</em></p>
+                <p>This method will register the given identifier with the specified
+unique identifier in this collection. If the unique identifier has
+already been used, an exception is thrown.</p>
+
+<pre><code>$collection-&gt;registerSubject('my_id', $subject);
+</code></pre>
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id</td>
+                                <td><p>The unique identifier.</p>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td><a href="../classes/Phine.Observer.SubjectInterface.html">\Phine\Observer\SubjectInterface</a></td>
+                                <td>$subject</td>
+                                <td><p>The subject to register.</p>
+</td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Phine\Observer\Exception\CollectionException</dt>
+                            <dd><p>If the unique identifier is already used.</p>
+</dd>
+                                                                    </dl>
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_replaceSubject" name="method_replaceSubject" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">replaceSubject()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">replaceSubject(string <span class="argument">$id</span>, \Phine\Observer\SubjectInterface <span class="argument">$subject</span>)</pre>
+                <p><em>Replaces a subject registered with a unique identifier.</em></p>
+                <p>This method will replace a subject that has been registered with the
+specified unique identifier with the given subject. If a subject has
+not already been registered with the unique identifier, an exception
+is thrown.</p>
+
+<pre><code>$subject-&gt;replaceSubject('my_id', $anotherSubject);
+</code></pre>
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id</td>
+                                <td><p>The unique identifier.</p>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td><a href="../classes/Phine.Observer.SubjectInterface.html">\Phine\Observer\SubjectInterface</a></td>
+                                <td>$subject</td>
+                                <td><p>The new subject.</p>
+</td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Phine\Observer\Exception\CollectionException</dt>
+                            <dd><p>If the unique identifier is not used.</p>
+</dd>
+                                                                    </dl>
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_replaceSubjects" name="method_replaceSubjects" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">replaceSubjects()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">replaceSubjects(\Phine\Observer\CollectionInterface <span class="argument">$collection</span>)</pre>
+                <p><em>Replaces the subjects for this collection using subjects from another.</em></p>
+                <p>This method will replace the subjects of this collection with the
+subjects registered with the given collection. Any previous subjects
+registered with this collection will be forgotten.</p>
+
+<pre><code>$subject-&gt;replaceSubjects($anotherCollection);
+</code></pre>
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/Phine.Observer.CollectionInterface.html">\Phine\Observer\CollectionInterface</a></td>
+                                <td>$collection</td>
+                                <td><p>A collection to replace with.</p>
+</td>
+                            </tr>
+                                            </table>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_unregisterSubject" name="method_unregisterSubject" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">unregisterSubject()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">unregisterSubject(string <span class="argument">$id</span>)</pre>
+                <p><em>Unregisters a subject from the collection.</em></p>
+                <p>This method will unregister a subject that was registered with the
+specified unique identifier. If a subject has not been registered
+with the unique identifier, an exception is thrown.</p>
+
+<pre><code>$subject-&gt;unregisterSubject('my_id');
+</code></pre>
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id</td>
+                                <td><p>The unique identifier.</p>
+</td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Phine\Observer\Exception\CollectionException</dt>
+                            <dd><p>If the unique identifier is not used.</p>
+</dd>
+                                                                    </dl>
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">CollectionInterface.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/CollectionInterface.php.txt" class="language-php"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/Phine.html">\Phine</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="">Errors</a></li>
+                                    <li><a href="">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on December 6th, 2013 at 22:23.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>
