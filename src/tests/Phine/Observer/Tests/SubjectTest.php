@@ -24,6 +24,49 @@ class SubjectTest extends TestCase
     private $subject;
 
     /**
+     * Make sure that we can copy the observers of another subject.
+     */
+    public function testCopyObservers()
+    {
+        $a = new Observer();
+        $b = new Observer();
+        $c = new Observer();
+        $d = new Observer();
+
+        Property::set(
+            $this->subject,
+            'observers',
+            array(
+                123 => array($a),
+            )
+        );
+
+        $another = new Subject();
+
+        Property::set(
+            $another,
+            'observers',
+            array(
+                0 => array($b),
+                123 => array($c),
+                456 => array($d),
+            )
+        );
+
+        $this->subject->copyObservers($another);
+
+        $this->assertSame(
+            array(
+                123 => array($a, $c),
+                0 => array($b),
+                456 => array($d),
+            ),
+            Property::get($this->subject, 'observers'),
+            'The observers should have been copied correctly.'
+        );
+    }
+
+    /**
      * Make sure that we can get the reason for the interrupted update.
      */
     public function testGetInterruptReason()
@@ -36,6 +79,26 @@ class SubjectTest extends TestCase
             $reason,
             $this->subject->getInterruptReason(),
             'Make sure we can retrieve the reason for the interrupted update.'
+        );
+    }
+
+    /**
+     * Make sure that we can retrieve the registered observers.
+     */
+    public function testGetObservers()
+    {
+        $observers = array(
+            0 => array(new Observer()),
+            123 => array(new Observer(), new Observer()),
+            456 => array(new Observer()),
+        );
+
+        Property::set($this->subject, 'observers', $observers);
+
+        $this->assertSame(
+            $observers,
+            $this->subject->getObservers(),
+            'The same observers should be returned.'
         );
     }
 
@@ -316,6 +379,44 @@ class SubjectTest extends TestCase
             ),
             Property::get($this->subject, 'observers'),
             'Make sure that the observer is registered with priority 123.'
+        );
+    }
+
+    /**
+     * Make sure that we can replace all registered observers using another subject.
+     */
+    public function testReplaceObservers()
+    {
+        $a = new Observer();
+        $b = new Observer();
+        $c = new Observer();
+
+        Property::set(
+            $this->subject,
+            'observers',
+            array(
+                123 => array(new Observer()),
+            )
+        );
+
+        $another = new Subject();
+
+        Property::set(
+            $another,
+            'observers',
+            array(
+                0 => array($a),
+                123 => array($b),
+                456 => array($c),
+            )
+        );
+
+        $this->subject->replaceObservers($another);
+
+        $this->assertSame(
+            Property::get($another, 'observers'),
+            Property::get($this->subject, 'observers'),
+            'The observers should have been copied correctly.'
         );
     }
 

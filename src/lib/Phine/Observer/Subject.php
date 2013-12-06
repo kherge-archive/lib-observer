@@ -56,9 +56,36 @@ class Subject implements SubjectInterface
     /**
      * {@inheritDoc}
      */
+    public function copyObservers(SubjectInterface $subject)
+    {
+        foreach ($subject->getObservers() as $priority => $observers) {
+            if (isset($this->observers[$priority])) {
+                $this->observers[$priority] = array_merge(
+                    $this->observers[$priority],
+                    $observers
+                );
+            } else {
+                $this->observers[$priority] = $observers;
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getInterruptReason()
     {
         return $this->reason;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getObservers()
+    {
+        ksort($this->observers, SORT_NUMERIC);
+
+        return $this->observers;
     }
 
     /**
@@ -140,12 +167,11 @@ class Subject implements SubjectInterface
         }
 
         $this->resetInterrupt();
-        $this->sortObservers();
 
         $this->updating = true;
 
         /** @var ObserverInterface $observer */
-        foreach ($this->observers as $observers) {
+        foreach ($this->getObservers() as $observers) {
             foreach ($observers as $observer) {
                 try {
                 $observer->receiveUpdate($this);
@@ -183,6 +209,14 @@ class Subject implements SubjectInterface
     /**
      * {@inheritDoc}
      */
+    public function replaceObservers(SubjectInterface $subject)
+    {
+        $this->observers = $subject->getObservers();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function unregisterAllObservers(
         ObserverInterface $observer = null,
         $priority = null
@@ -214,9 +248,7 @@ class Subject implements SubjectInterface
         $priority = null
     ) {
         if (null === $priority) {
-            $this->sortObservers();
-
-            foreach ($this->observers as $priority => $observers) {
+            foreach ($this->getObservers() as $priority => $observers) {
                 if (false !== ($key = array_search($observer, $observers, true))) {
                     unset($this->observers[$priority][$key]);
 
@@ -236,13 +268,5 @@ class Subject implements SubjectInterface
     protected function resetInterrupt()
     {
         $this->reason = null;
-    }
-
-    /**
-     * Sorts the observers according to their priorities.
-     */
-    protected function sortObservers()
-    {
-        ksort($this->observers, SORT_NUMERIC);
     }
 }

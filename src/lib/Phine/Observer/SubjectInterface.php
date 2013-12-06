@@ -177,6 +177,23 @@ interface SubjectInterface
     const LAST_PRIORITY = PHP_INT_MAX;
 
     /**
+     * Copies observers from another subject.
+     *
+     * This method will register the observers of another subject with this
+     * subject, maintain their priority and the order they were registered in.
+     * Note, however, that they will be called after any observers that have
+     * already been registered with this subject.
+     *
+     *     // $subject has a copy of the observers from $anotherSubject
+     *     $subject->copyObservers($anotherSubject);
+     *
+     * @param SubjectInterface $subject A subject to copy from.
+     *
+     * @api
+     */
+    public function copyObservers(SubjectInterface $subject);
+
+    /**
      * Returns the reason the last update was interrupted.
      *
      * This method will return the reason the last update this subject made
@@ -189,8 +206,42 @@ interface SubjectInterface
      *                         exception representing the reason is returned.
      *                         If no interrupt had occurred, nothing (`null`)
      *                         is returned.
+     *
+     * @api
      */
     public function getInterruptReason();
+
+    /**
+     * Returns the observers registered to this subject.
+     *
+     * This method will return a list of observers in the order they would
+     * be updated by the subject. The list is an array of arrays, where the
+     * key of the outer array is the priority number, and the inner array
+     * for each priority contains the list of observers in the order they
+     * have been registered.
+     *
+     *     $observers = $subject->getObservers();
+     *
+     * The returned list would look something like the following:
+     *
+     *     $observers = array(
+     *         0 => array(
+     *             $observer1,
+     *             $observer2,
+     *         ),
+     *         123 => array(
+     *             $observer3
+     *         ),
+     *         456 => array(
+     *             $observer4
+     *         ),
+     *     );
+     *
+     * @return array The list of observers and their priorities.
+     *
+     * @api
+     */
+    public function getObservers();
 
     /**
      * Checks if a specific observer is registered with this subject.
@@ -286,6 +337,8 @@ interface SubjectInterface
      * @return boolean If the last update was interrupted, `true` is returned.
      *                 If the last update was not interrupted, `false` is
      *                 returned.
+     *
+     * @api
      */
     public function isInterrupted();
 
@@ -302,6 +355,8 @@ interface SubjectInterface
      * @return boolean If the subject is currently updating its observers,
      *                 `true` is returned. If the subject is not currently
      *                 updating its observers, `false` is returned.
+     *
+     * @api
      */
     public function isUpdating();
 
@@ -370,6 +425,23 @@ interface SubjectInterface
         ObserverInterface $observer,
         $priority = self::FIRST_PRIORITY
     );
+
+    /**
+     * Replaces the observers for this subject using observers from another.
+     *
+     * This method will replace the observers of this subject with the
+     * observers registered with the given subject, preserving priority and
+     * registration order. Any previous observers registered with this subject
+     * will be forgotten.
+     *
+     *     // $subject will have the observers of $anotherSubject
+     *     $subject->replaceObservers($anotherSubject);
+     *
+     * @param SubjectInterface $subject A subject to replace with.
+     *
+     * @api
+     */
+    public function replaceObservers(SubjectInterface $subject);
 
     /**
      * Unregisters some or all observers from this subject.
