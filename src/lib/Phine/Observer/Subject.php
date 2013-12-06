@@ -7,7 +7,24 @@ use Phine\Observer\Exception\ReasonException;
 use Phine\Observer\Exception\SubjectException;
 
 /**
- * The default implementation of the {@link SubjectInterface} interface.
+ * The default implementation of `SubjectInterface`.
+ *
+ * Summary
+ * -------
+ *
+ * The `Subject` class is an implementation of `SubjectInterface`. You may use
+ * the implementation an authoritative example of how the interface should be
+ * implemented. You may optionally extend the class to add (not modify) new
+ * functionality that you may needed.
+ *
+ * Starting
+ * --------
+ *
+ * To start, you will need to simply create an instance of `Subject`:
+ *
+ *     use Phine\Observer\Subject;
+ *
+ *     $subject = new Subject();
  *
  * @author Kevin Herrera <kevin@herrera.io>
  *

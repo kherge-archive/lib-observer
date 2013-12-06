@@ -18,7 +18,7 @@ use Phine\Observer\Exception\SubjectException;
  * Starting
  * --------
  *
- * To create a new observer, you will need to create an implementation of
+ * To create a new subject, you will need to create an implementation of
  * `SubjectInterface`. In this example, I will be using the bundled `Subject`
  * implementation.
  *
