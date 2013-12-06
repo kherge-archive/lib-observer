@@ -12,8 +12,8 @@ Summary
 -------
 
 This library provides an implementation of the [observer pattern][]. You can
-use it to create other libraries such as event managers, state machines, and
-even MVC frameworks.
+use it to create other libraries such as event managers, state machines, MVC
+frameworks, and even provide a plugin system for application.
 
 Usage
 -----
