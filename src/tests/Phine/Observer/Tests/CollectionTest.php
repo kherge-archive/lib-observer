@@ -172,39 +172,6 @@ class CollectionTest extends TestCase
     }
 
     /**
-     * Make sure that we can trigger an update on a subject.
-     */
-    public function testUpdateSubject()
-    {
-        $observer = new Observer();
-        $subject = new Subject();
-
-        $subject->registerObserver($observer);
-
-        Property::set($this->collection, 'subjects', array('test' => $subject));
-
-        $this->collection->updateSubject('test');
-
-        $this->assertNotNull(
-            $observer->subject,
-            'Make sure that observers are updated.'
-        );
-    }
-
-    /**
-     * Make sure that an exception is thrown when updating unregistered subjects.
-     */
-    public function testUpdateSubjectNotRegistered()
-    {
-        $this->setExpectedException(
-            'Phine\\Observer\\Exception\\CollectionException',
-            'The "test" subject unique identifier is not in use.'
-        );
-
-        $this->collection->updateSubject('test');
-    }
-
-    /**
      * Creates a new collection to test.
      */
     protected function setUp()

@@ -5,9 +5,26 @@ namespace Phine\Observer;
 use Phine\Observer\Exception\CollectionException;
 
 /**
- * Manages a collection of subjects.
+ * The default implementation of `CollectionInterface`.
+ *
+ * Summary
+ * -------
+ *
+ * The `Collection` class is an implementation of `CollectionInterface`. You
+ * may use the implementation as an authoritative example of how the interface
+ * should be implemented. You may optionally extend the class to add (not
+ * modify) new functionality that you may need.
+ *
+ * Starting
+ * --------
+ *
+ * To start, you will need to simply create an instance of `Collection`:
+ *
+ *     $collection = new Collection();
  *
  * @author Kevin Herrera <kevin@herrera.io>
+ *
+ * @api
  */
 class Collection implements CollectionInterface
 {
@@ -72,17 +89,5 @@ class Collection implements CollectionInterface
         }
 
         unset($this->subjects[$id]);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function updateSubject($id)
-    {
-        if (!isset($this->subjects[$id])) {
-            throw CollectionException::idNotUsed($id);
-        }
-
-        $this->subjects[$id]->notifyObservers();
     }
 }

@@ -3,7 +3,22 @@
 namespace Phine\Observer;
 
 /**
- * Manages an array accessible collection of subjects.
+ * The default implementation of `ArrayCollectionInterface`.
+ *
+ * Summary
+ * -------
+ *
+ * The `ArrayCollection` class is an implementation of `ArrayCollectionInterface`.
+ * You may use the implementation as an authoritative example of how the interface
+ * should be implemented. You may optionally extend the class to add (not modify)
+ * new functionality that you may need.
+ *
+ * Starting
+ * --------
+ *
+ * To start, you will need to simply create an instance of `ArrayCollection`:
+ *
+ *     $collection = new ArrayCollection();
  *
  * @author Kevin Herrera <kevin@herrera.io>
  */
