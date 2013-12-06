@@ -113,6 +113,8 @@ interface CollectionInterface
      *     $collection->copySubjects($anotherCollection);
      *
      * @param CollectionInterface $collection A collection to copy from.
+     *
+     * @api
      */
     public function copySubjects(CollectionInterface $collection);
 
@@ -145,6 +147,8 @@ interface CollectionInterface
      *     $subjects = $collection->getSubjects();
      *
      * @return SubjectInterface[] The list of subjects.
+     *
+     * @api
      */
     public function getSubjects();
 
@@ -216,6 +220,8 @@ interface CollectionInterface
      *     $subject->replaceSubjects($anotherCollection);
      *
      * @param CollectionInterface $collection A collection to replace with.
+     *
+     * @api
      */
     public function replaceSubjects(CollectionInterface $collection);
 
