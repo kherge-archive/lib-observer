@@ -37,6 +37,8 @@ namespace Phine\Observer;
  * @see SubjectInterface::interruptUpdate()
  *
  * @author Kevin Herrera <kevin@herrera.io>
+ *
+ * @api
  */
 interface ObserverInterface
 {
@@ -44,6 +46,8 @@ interface ObserverInterface
      * Receives an update from an observed subject.
      *
      * @param SubjectInterface $subject The subject being observed.
+     *
+     * @api
      */
     public function receiveUpdate(SubjectInterface $subject);
 }
