@@ -109,11 +109,13 @@ registration (`registerObserver()`). By default, shown in all the examples
 provided, the priority is `SubjectInterface::FIRST_PRIORITY` (which is `0`,
 zero). You may, however, specify your own priority:
 
-    $subject->registerObserver(new Message('A'), SubjectInterface::LAST_PRIORITY);
-    $subject->registerObserver(new Message('B'), 789);
-    $subject->registerObserver(new Message('C'), 123);
-    $subject->registerObserver(new Message('D'), 456);
-    $subject->registerObserver(new Message('E'), SubjectInterface::FIRST_PRIORITY);
+```php
+$subject->registerObserver(new Message('A'), SubjectInterface::LAST_PRIORITY);
+$subject->registerObserver(new Message('B'), 789);
+$subject->registerObserver(new Message('C'), 123);
+$subject->registerObserver(new Message('D'), 456);
+$subject->registerObserver(new Message('E'), SubjectInterface::FIRST_PRIORITY);
+```
 
 With the above example, you can expect the following output:
 
@@ -134,40 +136,44 @@ When a subject is in the process of updating its registered observers, an
 observer may interrupt the subject. An interrupt is performed by an observer
 when it calls the `SubjectInterface::interruptUpdate()` method.
 
-    use Phine\Observer\Exception\ReasonException;
+```php
+use Phine\Observer\Exception\ReasonException;
 
+/**
+ * Simply interrupts the subject in the middle of an update.
+ */
+class InterruptingCow implements ObserverInterface
+{
     /**
-     * Simply interrupts the subject in the middle of an update.
+     * Interrupts the update.
      */
-    class InterruptingCow implements ObserverInterface
+    public function receiveUpdate(SubjectInterface $subject)
     {
-        /**
-         * Interrupts the update.
-         */
-        public function receiveUpdate(SubjectInterface $subject)
-        {
-            // do some work
+        // do some work
 
-            $subject->interruptUpdate(
-                new ReasonException('MOOOOO')
-            );
+        $subject->interruptUpdate(
+            new ReasonException('MOOOOO')
+        );
 
-            // do some final work
-        }
+        // do some final work
     }
+}
+```
 
 Using the following example:
 
-    // create a new subject
-    $subject = new Subject();
+```php
+// create a new subject
+$subject = new Subject();
 
-    // register some observers
-    $subject->registerObserver(new Message('So what did the interrupt cow say?'));
-    $subject->registerObserver(new InterruptingCow());
-    $subject->registerObserver(new Message('We never get this far.'));
+// register some observers
+$subject->registerObserver(new Message('So what did the interrupt cow say?'));
+$subject->registerObserver(new InterruptingCow());
+$subject->registerObserver(new Message('We never get this far.'));
 
-    // notify the observers
-    $subject->notifyObservers();
+// notify the observers
+$subject->notifyObservers();
+```
 
 You can expect the following output:
 
@@ -185,46 +191,54 @@ The library provides two ways of doing so: `Collection` and `ArrayCollection`.
 The `Collection` will associate an individual subject with a specific unique
 identifier.
 
-    use Phine\Observer\Collection;
+```php
+use Phine\Observer\Collection;
 
-    // create a new collection
-    $collection = new Collection();
+// create a new collection
+$collection = new Collection();
 
-    // register a few subjects
-    $collection->registerSubject('one', new Subject());
-    $collection->registerSubject('two', new Subject());
-    $collection->registerSubject('three', new Subject());
+// register a few subjects
+$collection->registerSubject('one', new Subject());
+$collection->registerSubject('two', new Subject());
+$collection->registerSubject('three', new Subject());
+```
 
 You can then retrieve the subjects or replace them as needed.
 
-    // replace one
-    $collection->registerSubject('two', new Subject());
+```php
+// replace one
+$collection->registerSubject('two', new Subject());
 
-    // update observers of another
-    $collection->getSubject('three')->notifyObservers();
+// update observers of another
+$collection->getSubject('three')->notifyObservers();
+```
 
 The `ArrayCollection` class provides a leaner way of managing subject
 registrations. It is an extension of the `Collection` class that supports
 array access through `ArrayCollectionInterface`.
 
-    use Phine\Observer\ArrayCollection;
+```php
+use Phine\Observer\ArrayCollection;
 
-    // create a new collection
-    $collection = new ArrayCollection();
+// create a new collection
+$collection = new ArrayCollection();
 
-    // register a few subjects
-    $collection['one'] = new Subject();
-    $collection['two'] = new Subject();
-    $collection['three'] = new Subject();
+// register a few subjects
+$collection['one'] = new Subject();
+$collection['two'] = new Subject();
+$collection['three'] = new Subject();
+```
 
 Like the regular `Collection` class, you can also replace and retrieve
 individual subjects.
 
-    // replace one
-    $collection['two'] = new Subject();
+```php
+// replace one
+$collection['two'] = new Subject();
 
-    // update observers of another
-    $collection['three']->notifyObservers();
+// update observers of another
+$collection['three']->notifyObservers();
+```
 
 Documentation
 -------------
