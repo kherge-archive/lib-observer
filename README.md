@@ -15,6 +15,19 @@ This library provides an implementation of the [observer pattern][]. You can
 use it to create other libraries such as event managers, state machines, MVC
 frameworks, and even provide a plugin system for application.
 
+Requirement
+-----------
+
+- PHP >= 5.3.3
+- [Phine Exception][] >= 1.0.0
+
+Installation
+------------
+
+Via [Composer][]:
+
+    $ composer require "phine/observer=~2.0"
+
 Usage
 -----
 
@@ -165,18 +178,53 @@ You can expect the following output:
 Observers are not required to provide a reason (instance of `ReasonException`),
 but it will definitely help during the debugging process if one is given.
 
-Requirement
------------
+### Collections of Subjects
 
-- PHP >= 5.3.3
-- [Phine Exception][] >= 1.0.0
+There may be occasions where you will need to manage a collection of subjects.
+The library provides two ways of doing so: `Collection` and `ArrayCollection`.
+The `Collection` will associate an individual subject with a specific unique
+identifier.
 
-Installation
-------------
+    use Phine\Observer\Collection;
 
-Via [Composer][]:
+    // create a new collection
+    $collection = new Collection();
 
-    $ composer require "phine/observer=~2.0"
+    // register a few subjects
+    $collection->registerSubject('one', new Subject());
+    $collection->registerSubject('two', new Subject());
+    $collection->registerSubject('three', new Subject());
+
+You can then retrieve the subjects or replace them as needed.
+
+    // replace one
+    $collection->registerSubject('two', new Subject());
+
+    // update observers of another
+    $collection->getSubject('three')->notifyObservers();
+
+The `ArrayCollection` class provides a leaner way of managing subject
+registrations. It is an extension of the `Collection` class that supports
+array access through `ArrayCollectionInterface`.
+
+    use Phine\Observer\ArrayCollection;
+
+    // create a new collection
+    $collection = new ArrayCollection();
+
+    // register a few subjects
+    $collection['one'] = new Subject();
+    $collection['two'] = new Subject();
+    $collection['three'] = new Subject();
+
+Like the regular `Collection` class, you can also replace and retrieve
+individual subjects.
+
+    // replace one
+    $collection['two'] = new Subject();
+
+    // update observers of another
+    $collection['three']->notifyObservers();
 
 Documentation
 -------------
