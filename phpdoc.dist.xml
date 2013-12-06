@@ -2,6 +2,7 @@
 <phpdoc>
   <files>
     <directory>../lib-observer/src/lib</directory>
+    <directory>../lib-observer/src/vendors/phine/exception</directory>
     <ignore>*/test/*</ignore>
     <ignore>*/tests/*</ignore>
   </files>
