@@ -15,7 +15,7 @@
         "issues": "https://github.com/phine/lib-observer/issues"
     },
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.3.9",
         "phine/exception": "~1.0"
     },
     "require-dev": {
