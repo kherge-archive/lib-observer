@@ -18,7 +18,7 @@ frameworks, and even provide a plugin system for application.
 Requirement
 -----------
 
-- PHP >= 5.3.3
+- PHP >= 5.3.9
 - [Phine Exception][] >= 1.0.0
 
 Installation
